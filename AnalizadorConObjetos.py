@@ -1,3 +1,18 @@
+class Terminal:
+    def __init__(self, valor):
+        self.valor = valor
+    def val(self):
+        return self.valor
+class NoTerminal: 
+    def __init__(self, valor):
+        self.valor = valor
+    def val(self):
+        return self.valor
+class Estado: 
+    def __init__(self, valor):
+        self.valor = valor
+    def val(self):
+        return self.valor
 elementos=[]
 def analizadorLexico(cadena):
     if not cadena:
@@ -49,6 +64,7 @@ ld1=[3]
 li1=[3]
 ld2=[3,1]
 li2=[3,3]
+liobj=["E"]
 tablaej1=[[2,0,0,1],
        [0,0,-1,0],
        [0,3,0,0],
@@ -60,8 +76,11 @@ tablaej2=[[2,0,0,1],
        [2,0,0,4],
        [0,0,-2,0]]
 pila=[]
+pilaobj=[]
 pila.append("$")
 pila.append(0)
+pilaobj.append("$")
+pilaobj.append(0)
 cont=0
 fila=pila[-1]
 while cont < len(lisele):
@@ -70,7 +89,11 @@ while cont < len(lisele):
     accion=(tablaej1[fila][columna])
     if (accion>0):
         pila.append(lisele[cont].get("num"))
+        objeto1=NoTerminal(lisele[cont].get("lexema"))
+        pilaobj.append(objeto1.val())
+        objeto2=Estado(tablaej1[fila][columna])
         pila.append(tablaej1[fila][columna])
+        pilaobj.append(objeto2.val())
         cont+=1
     elif (accion==0):
         print("Cadena ejercicio 1 Inválida")
@@ -83,28 +106,41 @@ while cont < len(lisele):
             break
         for i in range (ld1[abs(accion)-2]*2):
             pila.pop()
+            pilaobj.pop()
         fila=pila[-1]
         columna=li1[abs(accion)-2]
         pila.append(columna)
+        objeto3=Terminal(liobj[columna-3])
+        pilaobj.append(objeto3.val())
         pila.append(tablaej1[fila][columna])
-    print(pila)
+        objeto3=Terminal(tablaej1[fila][columna])
+        pilaobj.append(objeto3.val())
+    print(pilaobj)
+lisele.clear()
 elementos=[]
 entrada2="a+b+c+d+e+f"
-lisele2=analizadorLexico(entrada2)
-for elemento in lisele2:
+lisele=analizadorLexico(entrada2)
+for elemento in lisele:
     print(elemento)
-pila2=[]
-pila2.append("$")
-pila2.append(0)
+pila.clear()
+pilaobj.clear()
+pila.append("$")
+pila.append(0)
+pilaobj.append("$")
+pilaobj.append(0)
 cont=0
-fila2=pila2[-1]
-while cont < len(lisele2):
-    fila2=pila2[-1]
-    columna2=int(lisele2[cont].get("num"))
-    accion=(tablaej2[fila2][columna2])
+fila=pila[-1]
+while cont < len(lisele):
+    fila=pila[-1]
+    columna=int(lisele[cont].get("num"))
+    accion=(tablaej2[fila][columna])
     if (accion>0):
-        pila2.append(lisele2[cont].get("num"))
-        pila2.append(tablaej2[fila2][columna2])
+        pila.append(lisele[cont].get("num"))
+        objeto1=NoTerminal(lisele[cont].get("lexema"))
+        pilaobj.append(objeto1.val())
+        objeto2=Estado(tablaej2[fila][columna])
+        pila.append(tablaej2[fila][columna])
+        pilaobj.append(objeto2.val())
         cont+=1
     elif (accion==0):
         print("Cadena ejercicio 2 Inválida")
@@ -113,12 +149,17 @@ while cont < len(lisele2):
         print("Cadena ejercicio 2 Válida")
         break
     elif(accion<-1):
-        if len(pila2)<1:
+        if len(pila)<1:
             break
         for i in range (ld2[abs(accion)-2]*2):
-            pila2.pop()
-        fila2=pila2[-1]
-        columna2=li2[abs(accion)-2]
-        pila2.append(columna2)
-        pila2.append(tablaej2[fila2][columna2])
-    print(pila2)
+            pila.pop()
+            pilaobj.pop()
+        fila=pila[-1]
+        columna=li2[abs(accion)-2]
+        pila.append(columna)
+        objeto3=Terminal(liobj[columna-3])
+        pilaobj.append(objeto3.val())
+        pila.append(tablaej2[fila][columna])
+        objeto3=Terminal(tablaej2[fila][columna])
+        pilaobj.append(objeto3.val())
+    print(pilaobj)
